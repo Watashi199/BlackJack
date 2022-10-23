@@ -18,14 +18,17 @@ def somme_cartes(main, qui):
         valeur_main += main[i]
     #Si la main vaut plus de 21 c'est perdu gros noob
     if valeur_main > 21:
-        print(valeur_main)
-        print("Perdu tu as dépassé 21")
-        exit()
-    elif valeur_main == 21:
+        print("Somme de la main",valeur_main)
         print(main)
-        print(qui,"a fait BLACKJACK")
+        print("\n",qui,"a perdu il a dépassé 21")
         exit()
-   
+    #Si la main vaut 21 c'est gagné
+    elif valeur_main == 21:
+        print("Somme de la main",valeur_main)
+        print(main)
+        print("\n",qui,"a fait un BLACKJACK")
+        exit()
+
 def tirer_carte(main,qui):
     carte_tire = random.choice(paquet)
     #Transformation des strings en int pour additionner
@@ -45,7 +48,7 @@ def tirer_carte(main,qui):
     somme_cartes(main,qui)
 
 def choix():
-    print("Que veux tu faire ?")
+    print("Que veux tu faire ?\n")
     if somme_cartes(main_joueur, joueur) == 21:
         print("Ta main",main_joueur[0],",", main_joueur[1])
         print("BLACKJACK")
@@ -65,7 +68,7 @@ def debut_partie():
     tirer_carte(main_joueur, joueur)
     print("Ta main",main_joueur[0],",", main_joueur[1])
     tirer_carte(main_croupier, joueur)
-    print("Main du croupier",main_croupier[0])
+    print("Main du croupier",main_croupier[0],"\n")
     choix()
 
 debut_partie()
