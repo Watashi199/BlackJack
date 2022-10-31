@@ -61,7 +61,6 @@ def choix():
         exit()
     elif input() == "Passe":
         ia_croupier()
-        return
 
 def ia_croupier():
     i = random.randint(1,10)
