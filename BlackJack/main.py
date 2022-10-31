@@ -10,10 +10,11 @@ main_croupier = []
 joueur = "Joueur"
 croupier = "Croupier"
 
+#Fonction pour afficher une main donnée
 def print_main(main,qui):
     print("La main du", qui,":", *main)
 
-#Fonction pour faire la somme de la main du joueur
+#Fonction pour faire la somme d'une main donnée
 def somme_cartes(main, qui):
     valeur_main = 0
     #Boucle pour additionner le résultat
@@ -32,6 +33,7 @@ def somme_cartes(main, qui):
         print(qui,"a fait un BLACKJACK")
         exit()
 
+#Fonction pour une tirer une carte dans la main donnée
 def tirer_carte(main,qui):
     carte_tire = random.choice(paquet)
     #Transformation des strings en int pour additionner
@@ -46,10 +48,10 @@ def tirer_carte(main,qui):
             carte_tire = 11
         case _:
             carte_tire = int(carte_tire)
-    #Ajout de la carte  a la main du croupier 
     main.append(carte_tire)
     somme_cartes(main,qui)
 
+#Fonction demandant un choix au joueur pour avancer dans la partie
 def choix():
     print("Que veux tu faire ?")
     if input() == "Tirer":
@@ -62,6 +64,7 @@ def choix():
     elif input() == "Passe":
         ia_croupier()
 
+#Fonction pour gérer les choix du croupier
 def ia_croupier():
     i = random.randint(1,10)
     if i <= 6:
