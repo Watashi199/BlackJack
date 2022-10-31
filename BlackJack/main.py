@@ -10,6 +10,9 @@ main_croupier = []
 joueur = "Joueur"
 croupier = "Croupier"
 
+def print_main(main,qui):
+    print("La main du", qui,":", *main)
+
 #Fonction pour faire la somme de la main du joueur
 def somme_cartes(main, qui):
     valeur_main = 0
@@ -18,15 +21,15 @@ def somme_cartes(main, qui):
         valeur_main += main[i]
     #Si la main vaut plus de 21 c'est perdu gros noob
     if valeur_main > 21:
-        print("Somme de la main",valeur_main)
-        print(main)
-        print("\n",qui,"a perdu il a dépassé 21")
+        print("Somme de la main du", qui, ":",valeur_main)
+        print_main(main,qui)
+        print(qui,"a perdu il a dépassé 21")
         exit()
     #Si la main vaut 21 c'est gagné
     elif valeur_main == 21:
-        print("Somme de la main",valeur_main)
-        print(main)
-        print("\n",qui,"a fait un BLACKJACK")
+        print("Somme de la main du", qui, ":",valeur_main)
+        print_main(main,qui)
+        print(qui,"a fait un BLACKJACK")
         exit()
 
 def tirer_carte(main,qui):
@@ -48,27 +51,36 @@ def tirer_carte(main,qui):
     somme_cartes(main,qui)
 
 def choix():
-    print("Que veux tu faire ?\n")
-    if somme_cartes(main_joueur, joueur) == 21:
-        print("Ta main",main_joueur[0],",", main_joueur[1])
-        print("BLACKJACK")
-        exit()
-    elif input() == "Tirer":
+    print("Que veux tu faire ?")
+    if input() == "Tirer":
         tirer_carte(main_joueur, joueur)
-        print("Ta main",main_joueur[0],",", main_joueur[1],",",main_joueur[2])
+        print_main(main_joueur,joueur)
+        ia_croupier()
     elif input() == "FF":
         print("Wallah j'abandonne")
         exit()
     elif input() == "Passe":
+        ia_croupier()
         return
+
+def ia_croupier():
+    i = random.randint(1,10)
+    if i <= 6:
+        tirer_carte(main_croupier, croupier)
+        print_main(main_croupier, croupier)
+        choix()
+    elif i > 6:
+        print("Le croupier se couche")
+        print_main(main_croupier, croupier)
+        exit()
 
 #Fonction pour démarrer la partie
 def debut_partie():
     tirer_carte(main_joueur, joueur)
     tirer_carte(main_joueur, joueur)
-    print("Ta main",main_joueur[0],",", main_joueur[1])
+    print_main(main_joueur, joueur)
     tirer_carte(main_croupier, joueur)
-    print("Main du croupier",main_croupier[0],"\n")
+    print_main(main_croupier, croupier)
     choix()
 
 debut_partie()
