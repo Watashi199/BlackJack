@@ -1,4 +1,6 @@
 import random
+from customtkinter import *
+from PIL import Image
 
 #Array des paquets de cartes
 paquet = ["2","3","4","5","6","7","8","9","10","J","Q","K","A"]
@@ -7,8 +9,10 @@ main_joueur = []
 #Carte en main du croupier
 main_croupier = []
 
-joueur = "Joueur"
-croupier = "Croupier"
+choixjoueur = ""
+
+JOUEUR = "Joueur"
+CROUPIER = "Croupier"
 
 #Fonction pour afficher une main donnée
 def print_main(main,qui):
@@ -53,15 +57,15 @@ def tirer_carte(main,qui):
 
 #Fonction demandant un choix au joueur pour avancer dans la partie
 def choix():
-    print("Que veux tu faire ?")
-    if input() == "Tirer":
+    choixjoueur = input("Que veux tu faire ?\nTu peux Tirer, Passe, FF\n")
+    if choixjoueur == "Tirer":
         tirer_carte(main_joueur, joueur)
         print_main(main_joueur,joueur)
         ia_croupier()
-    elif input() == "FF":
-        print("Wallah j'abandonne")
+    elif choixjoueur == "FF":
+        print("A+ en LAN\n")
         exit()
-    elif input() == "Passe":
+    elif choixjoueur == "Passe":
         ia_croupier()
 
 #Fonction pour gérer les choix du croupier
@@ -70,7 +74,7 @@ def ia_croupier():
     if i <= 6:
         tirer_carte(main_croupier, croupier)
         print_main(main_croupier, croupier)
-        choix()
+        #choix()
     elif i > 6:
         print("Le croupier se couche")
         print_main(main_croupier, croupier)
@@ -85,4 +89,45 @@ def debut_partie():
     print_main(main_croupier, croupier)
     choix()
 
-debut_partie()
+#debut_partie()
+
+#GUI
+
+def dp_button_callback():
+    debut_partie()
+
+def t_button_callback():
+    tirer_carte(main_joueur,joueur)
+    print_main(main_joueur,joueur)
+    ia_croupier()
+
+def p_button_callback():
+    ia_croupier()
+
+def f_button_callback():
+    print("A+ en LAN\n")
+    exit()
+
+app = CTk()
+app.title("Blackjack")
+app.geometry("500x300")
+
+text = CTkLabel(master=app, text="BLACKJACK")
+text.pack(padx=0, pady=10)
+
+action_frame = CTkFrame(master=app, fg_color="#3d85c6")
+action_frame.pack(expand=True)
+
+dp_button = CTkButton(master=app,text="Début de partie", fg_color="black", text_color="white",command=dp_button_callback)
+dp_button.pack(padx=10, pady=10)
+
+t_button = CTkButton(master=action_frame, text="Tirer", command=t_button_callback)
+t_button.pack(padx=10, pady=10)
+
+p_button = CTkButton(master=action_frame, text="Passer", command=p_button_callback)
+p_button.pack(padx=0, pady=0)
+
+f_button = CTkButton(master=action_frame, text="Fold", command=f_button_callback)
+f_button.pack(padx=10, pady=10)
+
+app.mainloop()
