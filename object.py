@@ -66,9 +66,7 @@ class Player:
                     value = int(value)
             return value
     
-    def GetCurrentHand(self):
-        return(self.currentCard)
-    
+    #Définition des actions du croupier en fonction des évennement interne au jeu
     def ChoiceIA(self):
         if self.handValue < 17:
             self.DrawCard()
@@ -80,9 +78,10 @@ class Player:
             print("\nLe croupier passe son tour.\n")
             return(self.winnable)
     
+    #Affichage les mains des joueurs
     def ShowHand(self):
-        print("\nValeur de la main du",self.name,":",self.handValue)
-        print("Cartes",self.name,":",' '.join(map(str, self.currentCard)),"\n")
+        print("\nValeur de la main du",self.name,":",self.handValue,
+              "\nCartes",self.name,":",' '.join(map(str, self.currentCard)),"\n")
 
 ############
 # Gameloop #
@@ -111,8 +110,7 @@ class GameLoop:
                 self.croupier.ChoiceIA()
                 self.turn += 1
             elif self.choix == "C": # Se coucher
-                print("\n\n")
-                print("- Fin de la partie -\n\n")
+                print("\n\n- Fin de la partie -\n\n")
                 self.turn == 0
             else:
                 print("Merci d'entrer T, P ou C")
