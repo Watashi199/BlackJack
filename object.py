@@ -42,8 +42,11 @@ class Player:
     
     def DrawCard(self):
         tmp = PickCard(pack)
-        self.currentCard.append(tmp)
-        self.handValue += self.AppendHandValue(tmp)
+        if self.handValue < 21:
+            self.currentCard.append(tmp)
+            self.handValue += self.AppendHandValue(tmp)
+        else:
+            print("Tu es déjà à",self.handValue,"tu ne peux plus tirer de cartes")
 
     # Retourner la valeur totale de la main
     def GetHandValue(self):
@@ -71,10 +74,10 @@ class Player:
         if self.handValue < 17:
             self.DrawCard()
         elif self.handValue > 21:
-                self.winnable == 1
+                self.winnable = 1
                 print("\nLe croupier est au dessus de 21 avec une main valant:",self.handValue,"\n")
         else:
-            self.winnable == 0
+            self.winnable = 0
             print("\nLe croupier passe son tour.\n")
             return(self.winnable)
     
@@ -82,6 +85,12 @@ class Player:
     def ShowHand(self):
         print("\nValeur de la main du",self.name,":",self.handValue,
               "\nCartes",self.name,":",' '.join(map(str, self.currentCard)),"\n")
+    
+    def ResetHand(self):
+        self.handValue = 0
+        print("New handValue",self.name, self.handValue)
+        self.currentCard.clear()
+        print("Main",self.name, self.handValue)
 
 ############
 # Gameloop #
@@ -89,17 +98,22 @@ class Player:
 
 class GameLoop:
     def __init__(self):
-        # self.paquet = Card()
         self.joueur = Player("Joueur")
         self.croupier = Player("Croupier")
         self.turn = 0
         self.choix = ""
-    
+
+    def Start(self):
+        print("------------------\nDébut du jeu\n------------------\nBLACKJACK")
+        self.Turn()
+
+    def Turn(self):
         while self.turn == 0:
-            print("------------------\nDébut de la partie\n------------------")
+            print("------------------\nDébut de la manche\n------------------")
             self.DrawBoth()
             self.turn += 1  
         while self.turn >= 1:
+            print("------------------------------------------------------")
             self.choix= ""
             self.ShowBoth()
             self.choix = input("A ton tour, que veux tu faire ? [T]irer une nouvelle carte, [P]asser ton tour ou te [C]oucher ?\n")
@@ -110,8 +124,12 @@ class GameLoop:
                 self.croupier.ChoiceIA()
                 self.turn += 1
             elif self.choix == "C": # Se coucher
-                print("\n\n- Fin de la partie -\n\n")
-                self.turn == 0
+                self.joueur.ResetHand()
+                self.croupier.ResetHand()
+                self.turn = 0
+                print(self.turn)
+                print("\n\n------------------\nFin de la manche\n------------------\n\n")
+                self.Turn()
             else:
                 print("Merci d'entrer T, P ou C")
 
@@ -121,10 +139,11 @@ class GameLoop:
     
     def DrawBoth(self):
         self.joueur.DrawCard()
-        self.croupier.ChoiceIA()
+        self.croupier.ChoiceIA()  
 
 ########
 # Main #
 ########
 
 gameloop = GameLoop()
+gameloop.Start()
